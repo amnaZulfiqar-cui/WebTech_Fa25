@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Checkout - BeMassage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f9f9f9;
+        font-family: "Arial", sans-serif;
+        margin: 0;
+      }
+      #Header_wrapper {
+        background-color: #ffffff;
+      }
+      .header_placeholder {
+        height: 0px;
+      }
+      .top_bar_left {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+      }
+      .logo img {
+        height: 58px;
+      }
+      .menu_wrapper {
+        display: flex;
+        gap: 20px;
+      }
+      .menu_wrapper ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+      }
+      .menu_wrapper ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+      .menu_wrapper ul li a:hover {
+        color: #b19c73;
+      }
+      #Top_bar {
+        background-color: #000;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        margin: 0;
+        padding: 15px 0;
+        transition: background-color 0.3s ease;
+      }
+      #Top_bar.scrolled {
+        background-color: #ffffff;
+      }
+      #Top_bar.scrolled ul li a {
+        color: #333;
+      }
+      #Top_bar.scrolled ul li a:hover {
+        color: #b19c73;
+      }
+      #Subheader {
+        position: relative;
+        background-image: url("images/home_slider_bg.jpg"); /* Replace with your image path */
+        background-size: cover; /* Ensures the image covers the entire div */
+        background-position: center; /* Centers the image */
+        padding: 60px 0; /* Adjust padding as needed */
+        text-align: center;
+        color: #fff; /* Set text color to white for better contrast */
+      }
+
+      /* Overlay for better text readability */
+      #Subheader::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Semi-transparent black overlay */
+        z-index: 1;
+      }
+
+      /* Ensure the content inside Subheader stays above the overlay */
+      #Subheader .container {
+        position: relative;
+        z-index: 2; /* Places the container above the overlay */
+      }
+
+      #Subheader h1.title {
+        color: #fff; /* White text for contrast */
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 0;
+      }
+      .checkout-container {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 40px;
+        margin-bottom: 60px;
+      }
+      h2 {
+        color: #333;
+        font-weight: bold;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+      .form-label {
+        font-weight: 600;
+        color: #333;
+      }
+      .form-control {
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      .summary-box {
+        background: #f5f5f5;
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .summary-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+      }
+      .summary-price {
+        color: #b19c73;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      .btn-massage {
+        background-color: #b19c73;
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s;
+      }
+      .btn-massage:hover {
+        background-color: #a08a60;
+        color: #fff;
+      }
+      .container {
+        padding: 60px 20px;
+      }
+      .container-a {
+        padding: 0px 20px;
+      }
+      #Footer {
+        background-color: #e5d5c9;
+        text-align: center;
+        padding: 40px 20px;
+      }
+      #Footer img {
+        height: 43px;
+        margin-bottom: 20px;
+      }
+      #Footer p {
+        color: #666;
+        font-size: 0.9rem;
+        margin: 0 auto;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="Wrapper">
+      <div id="Header_wrapper">
+        <header id="Header">
+          <div class="header_placeholder"></div>
+          <div id="Top_bar">
+            <div class="container-a">
+              <div class="top_bar_left">
+                <div class="logo">
+                  <a href="treatments1.html">
+                    <img src="images/logo.png" alt="BeMassage Logo" />
+                  </a>
+                </div>
+                <div class="menu_wrapper">
+                  <ul class="menu_left">
+                    <li><a href="treatments1.html">TREATMENTS</a></li>
+                    <li><a href="#">THERAPISTS</a></li>
+                    <li><a href="#">ABOUT US</a></li>
+                  </ul>
+                  <ul class="menu_right">
+                    <li><a href="#">PRICING</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                    <li><a href="#" style="color: #d04302">BUY NOW</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="Subheader">
+            <div class="container">
+              <h1 class="title">Checkout</h1>
+            </div>
+          </div>
+        </header>
+      </div>
+      <div id="Content">
+        <div class="container checkout-container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Payment Details</h2>
+              <form id="checkout-form" action="booking.html">
+                <input type="hidden" name="treatment" id="treatment-input" />
+                <input type="hidden" name="price" id="price-input" />
+                <div class="mb-3">
+                  <label for="name" class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="name" required />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="card" class="form-label">Card Number</label>
+                  <input type="text" class="form-control" id="card" required />
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="expiry" class="form-label">Expiry Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="expiry"
+                      placeholder="MM/YY"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control" id="cvv" required />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-massage">Checkout</button>
+              </form>
+            </div>
+            <div class="col-md-6">
+              <h2>Order Summary</h2>
+              <div class="summary-box">
+                <p class="summary-title">
+                  Treatment: <span id="treatment-name">Selected Treatment</span>
+                </p>
+                <p class="summary-price">
+                  Price: <span id="treatment-price">$XX.XX</span>
+                </p>
+                <p>
+                  Total: <span class="summary-price" id="total">$XX.XX</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer id="Footer">
+        <div class="container">
+          <div class="text-center">
+            <img src="images/logo.png" alt="Footer Logo" />
+            <p>
+              Sed magna quam, dictum pharetra tincidunt ut, dapibus eu felis.
+              Nam vitae nibh viverra sollicitudin ante non; fermentum lectus.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      window.addEventListener("scroll", function () {
+        const topBar = document.getElementById("Top_bar");
+        if (window.scrollY > 50) {
+          topBar.classList.add("scrolled");
+        } else {
+          topBar.classList.remove("scrolled");
+        }
+      });
+
+      // Populate order summary and form inputs from URL parameters
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const treatment = urlParams.get("treatment") || "Selected Treatment";
+        const price = urlParams.get("price") || "XX.XX";
+
+        document.getElementById("treatment-name").textContent = treatment;
+        document.getElementById("treatment-price").textContent = `$${price}`;
+        document.getElementById("total").textContent = `$${price}`;
+        document.getElementById("treatment-input").value = treatment;
+        document.getElementById("price-input").value = price;
+      });
+    </script>
+  </body>
+</html>

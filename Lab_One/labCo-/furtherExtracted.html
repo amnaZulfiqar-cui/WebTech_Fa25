@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Massage Treatments - Relaxation & Wellness</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #fcf9f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Styles */
+      header {
+        background: linear-gradient(to right, #2c2722, #4a4035);
+        color: white;
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #d6c6a5;
+      }
+
+      .logo span {
+        color: #b19c73;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 25px;
+      }
+
+      nav ul li a {
+        color: #e6e6e6;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        font-size: 16px;
+      }
+
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: #b19c73;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://placehold.co/1200x600/4a4035/FFFFFF?text=Massage+Treatments")
+            no-repeat center center/cover;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #d6c6a5;
+      }
+
+      .hero p {
+        font-size: 20px;
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      .btn {
+        display: inline-block;
+        background: #b19c73;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background: #9a875f;
+      }
+
+      /* Intro Section */
+      .intro {
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .intro h2 {
+        font-size: 36px;
+        color: #4a4035;
+        margin-bottom: 20px;
+      }
+
+      .intro p {
+        font-size: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+        color: #666;
+      }
+
+      .divider {
+        height: 3px;
+        width: 80px;
+        background: #b19c73;
+        margin: 20px auto;
+      }
+
+      /* Treatments Section */
+      .treatments {
+        padding: 60px 0;
+        background: #f5f2ed;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .section-title h2 {
+        font-size: 36px;
+        color: #4a4035;
+      }
+
+      .treatment-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .treatment-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .treatment-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .treatment-img {
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .treatment-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .treatment-card:hover .treatment-img img {
+        transform: scale(1.1);
+      }
+
+      .treatment-content {
+        padding: 20px;
+      }
+
+      .treatment-content h3 {
+        font-size: 22px;
+        color: #4a4035;
+        margin-bottom: 10px;
+      }
+
+      .price {
+        color: #b19c73;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .treatment-content p {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      /* CTA Section */
+      .cta {
+        background: linear-gradient(to right, #2c2722, #4a4035);
+        color: white;
+        text-align: center;
+        padding: 80px 0;
+      }
+
+      .cta h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #d6c6a5;
+      }
+
+      .cta p {
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      /* Footer */
+      footer {
+        background: #2c2722;
+        color: #e6e6e6;
+        padding: 50px 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .footer-section h3 {
+        color: #b19c73;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        margin-bottom: 10px;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section a {
+        color: #e6e6e6;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: #b19c73;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        margin-right: 15px;
+        font-size: 20px;
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #4a4035;
+        font-size: 14px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        nav ul {
+          margin-top: 15px;
+          justify-content: center;
+        }
+
+        nav ul li {
+          margin: 0 10px;
+        }
+
+        .hero h1 {
+          font-size: 36px;
+        }
+
+        .hero p {
+          font-size: 18px;
+        }
+
+        .intro h2 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container header-content">
+        <div class="logo">Serene<span>Spa</span></div>
+        <nav>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#" class="active">Treatments</a></li>
+            <li><a href="#">Therapists</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>Premium Massage Treatments</h1>
+        <p>
+          Experience ultimate relaxation and rejuvenation with our specialized
+          massage therapies
+        </p>
+        <a href="#treatments" class="btn">Explore Treatments</a>
+      </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="intro">
+      <div class="container">
+        <h2>Our Therapeutic Approach</h2>
+        <div class="divider"></div>
+        <p>
+          At Serene Spa, we believe in the healing power of touch. Our expert
+          therapists use a combination of traditional techniques and modern
+          approaches to provide personalized treatments that address your
+          specific needs. Each session is designed to melt away tension, reduce
+          stress, and promote overall wellness.
+        </p>
+      </div>
+    </section>
+
+    <!-- Treatments Section -->
+    <section class="treatments" id="treatments">
+      <div class="container">
+        <div class="section-title">
+          <h2>Our Signature Treatments</h2>
+          <div class="divider"></div>
+        </div>
+
+        <div class="treatment-grid">
+          <!-- Treatment 1 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Classic+Massage"
+                alt="Classic Massage"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Classic Relaxation Massage</h3>
+              <div class="price">$65 / 60min</div>
+              <p>
+                Our signature Swedish massage technique using long, flowing
+                strokes to release muscle tension and promote deep relaxation.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+
+          <!-- Treatment 2 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Deep+Tissue"
+                alt="Deep Tissue Massage"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Deep Tissue Therapy</h3>
+              <div class="price">$85 / 60min</div>
+              <p>
+                Targets the deeper layers of muscle and connective tissue to
+                release chronic tension and alleviate muscle pain.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+
+          <!-- Treatment 3 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Hot+Stone"
+                alt="Hot Stone Massage"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Hot Stone Therapy</h3>
+              <div class="price">$95 / 75min</div>
+              <p>
+                Warm basalt stones are placed on key points of the body to
+                deeply relax muscles and enhance the massage experience.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+
+          <!-- Treatment 4 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Aromatherapy"
+                alt="Aromatherapy Massage"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Aromatherapy Massage</h3>
+              <div class="price">$75 / 60min</div>
+              <p>
+                Combines gentle massage techniques with the therapeutic benefits
+                of essential oils selected for your specific needs.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+
+          <!-- Treatment 5 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Sports+Massage"
+                alt="Sports Massage"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Sports Recovery Massage</h3>
+              <div class="price">$90 / 60min</div>
+              <p>
+                Designed for athletes to help prevent injuries, improve
+                flexibility, and enhance recovery after intense training.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+
+          <!-- Treatment 6 -->
+          <div class="treatment-card">
+            <div class="treatment-img">
+              <img
+                src="https://placehold.co/600x400/4a4035/FFFFFF?text=Reflexology"
+                alt="Reflexology"
+              />
+            </div>
+            <div class="treatment-content">
+              <h3>Reflexology</h3>
+              <div class="price">$70 / 50min</div>
+              <p>
+                Applying pressure to specific points on the feet that correspond
+                to different body organs and systems.
+              </p>
+              <a href="#" class="btn">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Experience Relaxation?</h2>
+        <p>
+          Book your appointment today and let our expert therapists help you
+          find your balance and rejuvenate your body and mind.
+        </p>
+        <a href="#" class="btn">Book Your Session</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Serene Spa</h3>
+            <p>
+              Providing premium massage and wellness treatments to help you
+              relax, rejuvenate, and restore balance to your life.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> 123 Wellness Street,
+              Relaxation City
+            </p>
+            <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+            <p><i class="fas fa-envelope"></i> info@serenespa.com</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#">Our Services</a></li>
+              <li><a href="#">Special Offers</a></li>
+              <li><a href="#">Gift Cards</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>&copy; 2023 Serene Spa. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Simple JavaScript for navigation active state
+      document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll("nav a");
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            navLinks.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+          });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
