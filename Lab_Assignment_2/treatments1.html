@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Treatments - BeMassage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f9f9f9;
+        font-family: "Arial", sans-serif;
+        margin: 0;
+      }
+      #Header_wrapper {
+        background-color: #ffffff;
+      }
+      .header_placeholder {
+        height: 0px;
+      }
+      .top_bar_left {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+      }
+      .logo img {
+        height: 58px;
+      }
+      .menu_wrapper {
+        display: flex;
+        gap: 20px;
+      }
+      .menu_wrapper ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 15px;
+      }
+      .menu_wrapper ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+      .menu_wrapper ul li a:hover {
+        color: #b19c73;
+      }
+      #Top_bar {
+        background-color: #000;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        margin: 0;
+        padding: 15px 0;
+        transition: background-color 0.3s ease;
+      }
+      #Top_bar.scrolled {
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+      #Top_bar.scrolled ul li a {
+        color: #333;
+      }
+      #Top_bar.scrolled ul li a:hover {
+        color: #b19c73;
+      }
+      #Subheader {
+        position: relative;
+        background-image: url("images/home_slider_bg.jpg"); /* Replace with your image path */
+        background-size: cover; /* Ensures the image covers the entire div */
+        background-position: center; /* Centers the image */
+        padding: 60px 0; /* Adjust padding as needed */
+        text-align: center;
+        color: #fff; /* Set text color to white for better contrast */
+      }
+
+      /* Overlay for better text readability */
+      #Subheader::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Semi-transparent black overlay */
+        z-index: 1;
+      }
+
+      /* Ensure the content inside Subheader stays above the overlay */
+      #Subheader .container {
+        position: relative;
+        z-index: 2; /* Places the container above the overlay */
+      }
+
+      #Subheader h1.title {
+        color: #fff; /* White text for contrast */
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 0;
+      }
+      .treatment-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        margin-bottom: 30px;
+      }
+      .treatment-card:hover {
+        transform: translateY(-5px);
+      }
+      .treatment-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+      }
+      .treatment-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin: 10px 0 5px;
+      }
+      .treatment-price {
+        color: #b19c73;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .treatment-desc {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+      .btn-massage {
+        background-color: #b19c73;
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .btn-massage:hover {
+        background-color: #a08a60;
+        color: #fff;
+      }
+      .container {
+        padding: 60px 20px;
+      }
+      .container-a {
+        padding: 0px 20px;
+      }
+
+      #Footer {
+        background-color: #e5d5c9;
+        text-align: center;
+        padding: 40px 20px;
+      }
+      #Footer img {
+        height: 43px;
+        margin-bottom: 20px;
+      }
+      #Footer p {
+        color: #666;
+        font-size: 0.9rem;
+        margin: 0 auto;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="Wrapper">
+      <div id="Header_wrapper">
+        <header id="Header">
+          <div id="Top_bar">
+            <div class="container-a">
+              <div class="top_bar_left">
+                <div class="logo">
+                  <a href="treatments1.html">
+                    <img src="images/logo.png" alt="BeMassage Logo" />
+                  </a>
+                </div>
+                <div class="menu_wrapper">
+                  <ul class="menu_left">
+                    <li><a href="treatments1.html">TREATMENTS</a></li>
+                    <li><a href="#">THERAPISTS</a></li>
+                    <li><a href="#">ABOUT US</a></li>
+                  </ul>
+                  <ul class="menu_right">
+                    <li><a href="#">PRICING</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                    <li><a href="#" style="color: #d04302">BUY NOW</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="Subheader">
+            <div class="container">
+              <h1 class="title">TREATMENTS</h1>
+            </div>
+          </div>
+        </header>
+      </div>
+      <div id="Content">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/classic.jpg"
+                  alt="Classic Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">CLASSIC MASSAGE</h5>
+                  <p class="treatment-price">$39</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=CLASSIC%20MASSAGE&price=39"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/muscle.jpg"
+                  alt="Muscle Mender Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">MUSCLE MENDER MASSAGE</h5>
+                  <p class="treatment-price">$29</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=Muscle%20Mender%20Massage&price=29"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/chakra.jpg"
+                  alt="Chakra Energy Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">CHAKRA ENERGY MASSAGE</h5>
+                  <p class="treatment-price">$25</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=Chakra%20Energy%20Massage&price=25"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/destress.jpg"
+                  alt="De-Stress Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">DE-STRESS MASSAGE</h5>
+                  <p class="treatment-price">$45</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=De-Stress%20Massage&price=45"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="text-center mt-5"
+            style="background-color: #e5d5c9; padding: 40px"
+          >
+            <h3 style="color: #b19c73; font-style: italic">
+              GIVE YOURSELF A MOMENT OF RELAX<br />BOOK YOUR SESSION NOW!
+            </h3>
+          </div>
+        </div>
+      </div>
+      <footer id="Footer">
+        <div class="container">
+          <div class="text-center">
+            <img src="images/logo.png" alt="Footer Logo" />
+            <p>
+              Sed magna quam, dictum pharetra tincidunt ut, dapibus eu felis.
+              Nam vitae nibh viverra sollicitudin ante non; fermentum lectus.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
