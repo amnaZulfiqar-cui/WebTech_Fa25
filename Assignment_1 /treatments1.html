@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1"
     />
-    <title>Checkout - BeMassage</title>
+    <title>Treatments - BeMassage</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -63,7 +63,7 @@
         transition: background-color 0.3s ease;
       }
       #Top_bar.scrolled {
-        background-color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.9);
       }
       #Top_bar.scrolled ul li a {
         color: #333;
@@ -105,43 +105,38 @@
         font-weight: bold;
         margin: 0;
       }
-      .checkout-container {
+      .treatment-card {
         background: #fff;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        margin-top: 40px;
-        margin-bottom: 60px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        margin-bottom: 30px;
       }
-      h2 {
-        color: #333;
-        font-weight: bold;
-        font-size: 1.8rem;
-        margin-bottom: 20px;
+      .treatment-card:hover {
+        transform: translateY(-5px);
       }
-      .form-label {
-        font-weight: 600;
-        color: #333;
+      .treatment-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
       }
-      .form-control {
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        padding: 10px;
-      }
-      .summary-box {
-        background: #f5f5f5;
-        border-radius: 10px;
-        padding: 20px;
-      }
-      .summary-title {
+      .treatment-title {
         font-size: 1.2rem;
         font-weight: bold;
         color: #333;
+        margin: 10px 0 5px;
       }
-      .summary-price {
+      .treatment-price {
         color: #b19c73;
-        font-weight: 600;
         font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .treatment-desc {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
       }
       .btn-massage {
         background-color: #b19c73;
@@ -153,7 +148,6 @@
         border: none;
         text-decoration: none;
         display: inline-block;
-        transition: background-color 0.3s;
       }
       .btn-massage:hover {
         background-color: #a08a60;
@@ -165,6 +159,7 @@
       .container-a {
         padding: 0px 20px;
       }
+
       #Footer {
         background-color: #e5d5c9;
         text-align: center;
@@ -186,7 +181,6 @@
     <div id="Wrapper">
       <div id="Header_wrapper">
         <header id="Header">
-          <div class="header_placeholder"></div>
           <div id="Top_bar">
             <div class="container-a">
               <div class="top_bar_left">
@@ -212,69 +206,110 @@
           </div>
           <div id="Subheader">
             <div class="container">
-              <h1 class="title">Checkout</h1>
+              <h1 class="title">TREATMENTS</h1>
             </div>
           </div>
         </header>
       </div>
       <div id="Content">
-        <div class="container checkout-container">
+        <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <h2>Payment Details</h2>
-              <form id="checkout-form" action="booking.html">
-                <input type="hidden" name="treatment" id="treatment-input" />
-                <input type="hidden" name="price" id="price-input" />
-                <div class="mb-3">
-                  <label for="name" class="form-label">Full Name</label>
-                  <input type="text" class="form-control" id="name" required />
+              <div class="treatment-card">
+                <img
+                  src="images/classic.jpg"
+                  alt="Classic Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">CLASSIC MASSAGE</h5>
+                  <p class="treatment-price">$39</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=CLASSIC%20MASSAGE&price=39"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
                 </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email Address</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="card" class="form-label">Card Number</label>
-                  <input type="text" class="form-control" id="card" required />
-                </div>
-                <div class="row mb-3">
-                  <div class="col">
-                    <label for="expiry" class="form-label">Expiry Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="expiry"
-                      placeholder="MM/YY"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <label for="cvv" class="form-label">CVV</label>
-                    <input type="text" class="form-control" id="cvv" required />
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-massage">Checkout</button>
-              </form>
-            </div>
-            <div class="col-md-6">
-              <h2>Order Summary</h2>
-              <div class="summary-box">
-                <p class="summary-title">
-                  Treatment: <span id="treatment-name">Selected Treatment</span>
-                </p>
-                <p class="summary-price">
-                  Price: <span id="treatment-price">$XX.XX</span>
-                </p>
-                <p>
-                  Total: <span class="summary-price" id="total">$XX.XX</span>
-                </p>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/muscle.jpg"
+                  alt="Muscle Mender Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">MUSCLE MENDER MASSAGE</h5>
+                  <p class="treatment-price">$29</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=Muscle%20Mender%20Massage&price=29"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/chakra.jpg"
+                  alt="Chakra Energy Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">CHAKRA ENERGY MASSAGE</h5>
+                  <p class="treatment-price">$25</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=Chakra%20Energy%20Massage&price=25"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="treatment-card">
+                <img
+                  src="images/destress.jpg"
+                  alt="De-Stress Massage"
+                  class="treatment-img"
+                />
+                <div class="p-3">
+                  <h5 class="treatment-title">DE-STRESS MASSAGE</h5>
+                  <p class="treatment-price">$45</p>
+                  <p class="treatment-desc">
+                    Mauris in erat justo. Nullam ac urna eu felis dapibus
+                    condimentum sit amet a augue.
+                  </p>
+                  <a
+                    href="checkout1.html?treatment=De-Stress%20Massage&price=45"
+                    class="btn btn-massage"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="text-center mt-5"
+            style="background-color: #e5d5c9; padding: 40px"
+          >
+            <h3 style="color: #b19c73; font-style: italic">
+              GIVE YOURSELF A MOMENT OF RELAX<br />BOOK YOUR SESSION NOW!
+            </h3>
           </div>
         </div>
       </div>
@@ -290,28 +325,5 @@
         </div>
       </footer>
     </div>
-    <script>
-      window.addEventListener("scroll", function () {
-        const topBar = document.getElementById("Top_bar");
-        if (window.scrollY > 50) {
-          topBar.classList.add("scrolled");
-        } else {
-          topBar.classList.remove("scrolled");
-        }
-      });
-
-      // Populate order summary and form inputs from URL parameters
-      document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const treatment = urlParams.get("treatment") || "Selected Treatment";
-        const price = urlParams.get("price") || "XX.XX";
-
-        document.getElementById("treatment-name").textContent = treatment;
-        document.getElementById("treatment-price").textContent = `$${price}`;
-        document.getElementById("total").textContent = `$${price}`;
-        document.getElementById("treatment-input").value = treatment;
-        document.getElementById("price-input").value = price;
-      });
-    </script>
   </body>
 </html>
