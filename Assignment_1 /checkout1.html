@@ -62,15 +62,6 @@
         padding: 15px 0;
         transition: background-color 0.3s ease;
       }
-      #Top_bar.scrolled {
-        background-color: #ffffff;
-      }
-      #Top_bar.scrolled ul li a {
-        color: #333;
-      }
-      #Top_bar.scrolled ul li a:hover {
-        color: #b19c73;
-      }
       #Subheader {
         position: relative;
         background-image: url("images/home_slider_bg.jpg"); /* Replace with your image path */
@@ -290,15 +281,5 @@
         </div>
       </footer>
     </div>
-    <script>
-      window.addEventListener("scroll", function () {
-        const topBar = document.getElementById("Top_bar");
-        if (window.scrollY > 50) {
-          topBar.classList.add("scrolled");
-        } else {
-          topBar.classList.remove("scrolled");
-        }
-      });
-    </script>
   </body>
 </html>
