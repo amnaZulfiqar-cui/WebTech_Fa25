@@ -1,0 +1,498 @@
+<%- include('../partials/header') %>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Order Preview</li>
+    </ol>
+</nav>
+
+<h1 class="mb-4">
+    <i class="bi bi-clipboard-check me-2"></i>
+    Order Preview
+</h1>
+
+<% if (couponMessage) { %>
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <%= couponMessage %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<% } %>
+
+<div class="row">
+    <!-- Order Items -->
+    <div class="col-lg-8">
+        <!-- Cart Items Summary -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-cart-check me-2"></i>
+                    Review Your Items (<%= cart.length %> items)
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% cart.forEach(item => { %>
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <img src="<%= item.image %>" 
+                                             alt="<%= item.name %>" 
+                                             class="rounded me-3"
+                                             style="width: 60px; height: 60px; object-fit: cover;">
+                                        <div>
+                                            <h6 class="mb-0"><%= item.name %></h6>
+                                            <small class="text-muted">SKU: ITEM-<%= item.productId.toString().substring(0, 8) %></small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">$<%= item.price.toFixed(2) %></td>
+                                <td class="text-center align-middle"><%= item.quantity %></td>
+                                <td class="text-end align-middle">
+                                    <strong>$<%= (item.price * item.quantity).toFixed(2) %></strong>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-end">
+                    <a href="/cart" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Back to Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Information Form -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Customer Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form action="/order/place" method="POST" id="orderForm">
+                    <div class="row g-3">
+                        <!-- Contact Info -->
+                        <div class="col-md-6">
+                            <label for="email" class="form-label required">Email Address</label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   name="email" 
+                                   value="<%= session.email || '' %>"
+                                   required>
+                            <small class="text-muted">Order confirmation will be sent here</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Full Name (Optional)</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="name" 
+                                   name="name"
+                                   value="<%= session.name || '' %>">
+                        </div>
+                        
+                        <!-- Shipping Address -->
+                        <div class="col-12">
+                            <h6 class="border-bottom pb-2 mb-3">Shipping Address</h6>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="street" class="form-label">Street Address</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="street" 
+                                   name="street"
+                                   value="<%= session.street || '' %>">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="city" 
+                                   name="city"
+                                   value="<%= session.city || '' %>">
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="state" 
+                                   name="state"
+                                   value="<%= session.state || '' %>">
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label for="zipCode" class="form-label">ZIP Code</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="zipCode" 
+                                   name="zipCode"
+                                   value="<%= session.zipCode || '' %>">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="country" class="form-label">Country</label>
+                            <select class="form-control" id="country" name="country">
+                                <option value="">Select Country</option>
+                                <option value="US" <%= session.country === 'US' ? 'selected' : '' %>>United States</option>
+                                <option value="CA" <%= session.country === 'CA' ? 'selected' : '' %>>Canada</option>
+                                <option value="UK" <%= session.country === 'UK' ? 'selected' : '' %>>United Kingdom</option>
+                                <option value="AU" <%= session.country === 'AU' ? 'selected' : '' %>>Australia</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Payment Method -->
+                        <div class="col-12">
+                            <h6 class="border-bottom pb-2 mb-3">Payment Method</h6>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" 
+                                       type="radio" 
+                                       name="paymentMethod" 
+                                       id="creditCard" 
+                                       value="Credit Card" 
+                                       checked>
+                                <label class="form-check-label" for="creditCard">
+                                    <i class="bi bi-credit-card me-2"></i>
+                                    Credit/Debit Card
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" 
+                                       type="radio" 
+                                       name="paymentMethod" 
+                                       id="paypal" 
+                                       value="PayPal">
+                                <label class="form-check-label" for="paypal">
+                                    <i class="bi bi-paypal me-2"></i>
+                                    PayPal
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" 
+                                       type="radio" 
+                                       name="paymentMethod" 
+                                       id="cash" 
+                                       value="Cash on Delivery">
+                                <label class="form-check-label" for="cash">
+                                    <i class="bi bi-cash-coin me-2"></i>
+                                    Cash on Delivery
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Order Notes -->
+                        <div class="col-12">
+                            <label for="notes" class="form-label">Order Notes (Optional)</label>
+                            <textarea class="form-control" 
+                                      id="notes" 
+                                      name="notes" 
+                                      rows="3"
+                                      placeholder="Special instructions for your order..."><%= session.notes || '' %></textarea>
+                        </div>
+                        
+                        <!-- Terms & Conditions -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" 
+                                       type="checkbox" 
+                                       id="terms" 
+                                       required>
+                                <label class="form-check-label" for="terms">
+                                    I agree to the 
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
+                                    and have read the 
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm sticky-top" style="top: 100px;">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-receipt me-2"></i>
+                    Order Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Order Details -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal</span>
+                        <span>$<%= subtotal %></span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Shipping</span>
+                        <span>
+                            <% if (parseFloat(subtotal) > 50) { %>
+                            <span class="text-success">FREE</span>
+                            <% } else { %>
+                            $<%= shipping %>
+                            <% } %>
+                        </span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tax (8%)</span>
+                        <span>$<%= tax %></span>
+                    </div>
+                    
+                    <% if (discount > 0) { %>
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>Discount (<%= discountCode %>)</span>
+                        <span>-$<%= discount %></span>
+                    </div>
+                    <% } %>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Total</span>
+                        <span class="h4 text-primary">$<%= total %></span>
+                    </div>
+                    
+                    <% if (parseFloat(subtotal) < 50) { %>
+                    <div class="alert alert-info small mt-3">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Orders over $50 qualify for FREE shipping!
+                    </div>
+                    <% } %>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2">
+                    <button type="submit" 
+                            form="orderForm" 
+                            class="btn btn-success btn-lg">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Place Order
+                    </button>
+                    
+                    <a href="/cart" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Back to Cart
+                    </a>
+                </div>
+                
+                <!-- Security Info -->
+                <div class="text-center mt-4 pt-3 border-top">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-check text-success me-1"></i>
+                        100% Secure Payment • SSL Encrypted
+                    </small>
+                    <div class="mt-2">
+                        <img src="https://cdn.worldvectorlogo.com/logos/visa-1.svg" alt="Visa" height="25" class="me-2">
+                        <img src="https://cdn.worldvectorlogo.com/logos/mastercard-2.svg" alt="Mastercard" height="25" class="me-2">
+                        <img src="https://cdn.worldvectorlogo.com/logos/paypal-3.svg" alt="PayPal" height="25">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coupon Code -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="bi bi-percent me-2"></i>
+                    Apply Coupon
+                </h6>
+                <form action="/order/preview" method="GET" class="row g-2">
+                    <div class="col">
+                        <input type="text" 
+                               class="form-control form-control-sm" 
+                               name="coupon" 
+                               value="<%= discountCode || '' %>"
+                               placeholder="Enter coupon code">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Apply
+                        </button>
+                    </div>
+                </form>
+                <% if (!discountCode) { %>
+                <small class="text-muted d-block mt-2">
+                    Try: <strong>SAVE10</strong> for 10% off
+                </small>
+                <% } %>
+            </div>
+        </div>
+        
+        <!-- Help -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="bi bi-question-circle me-2"></i>
+                    Need Help?
+                </h6>
+                <p class="small text-muted mb-2">
+                    Contact us for any questions about your order.
+                </p>
+                <ul class="list-unstyled small">
+                    <li><i class="bi bi-envelope me-2"></i>support@myshop.com</li>
+                    <li><i class="bi bi-telephone me-2"></i>+1 (555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms & Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Acceptance of Terms</h6>
+                <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+                
+                <h6>2. Products and Services</h6>
+                <p>All products and services are subject to availability. We reserve the right to discontinue any product at any time.</p>
+                
+                <h6>3. Pricing and Payment</h6>
+                <p>Prices are subject to change without notice. We reserve the right to refuse any order you place with us.</p>
+                
+                <h6>4. Shipping and Delivery</h6>
+                <p>Shipping times are estimates and not guaranteed. We are not responsible for delays due to circumstances beyond our control.</p>
+                
+                <h6>5. Returns and Refunds</h6>
+                <p>Returns are accepted within 30 days of delivery. Products must be in original condition with all tags attached.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Privacy Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Information We Collect</h6>
+                <p>We collect information you provide directly to us, such as when you create an account, make a purchase, or contact us.</p>
+                
+                <h6>2. How We Use Your Information</h6>
+                <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+                
+                <h6>3. Information Sharing</h6>
+                <p>We do not sell, trade, or rent your personal information to third parties without your consent, except as required by law.</p>
+                
+                <h6>4. Security</h6>
+                <p>We take reasonable measures to help protect your personal information from loss, theft, misuse, and unauthorized access.</p>
+                
+                <h6>5. Your Choices</h6>
+                <p>You may update, correct, or delete your account information at any time by logging into your account or contacting us.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Order Preview Page Styles & Scripts -->
+<style>
+.form-label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+.card-header.bg-light {
+    background-color: #f8f9fa !important;
+}
+</style>
+
+<script>
+// Form validation
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+    const email = document.getElementById('email').value;
+    const terms = document.getElementById('terms').checked;
+    
+    if (!email || !email.includes('@')) {
+        e.preventDefault();
+        alert('Please enter a valid email address.');
+        document.getElementById('email').focus();
+        return false;
+    }
+    
+    if (!terms) {
+        e.preventDefault();
+        alert('You must agree to the Terms & Conditions to proceed.');
+        document.getElementById('terms').focus();
+        return false;
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing...';
+    submitBtn.disabled = true;
+});
+
+// Save form data to session storage
+document.querySelectorAll('#orderForm input, #orderForm textarea, #orderForm select').forEach(element => {
+    element.addEventListener('change', function() {
+        sessionStorage.setItem(this.name, this.value);
+    });
+    
+    // Load saved data
+    const savedValue = sessionStorage.getItem(this.name);
+    if (savedValue) {
+        this.value = savedValue;
+    }
+});
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    // Set required fields indicator
+    document.querySelectorAll('[required]').forEach(input => {
+        const label = input.closest('.form-group')?.querySelector('.form-label') || 
+                     input.closest('.col-md-6, .col-12')?.querySelector('.form-label');
+        if (label && !label.classList.contains('required')) {
+            label.classList.add('required');
+        }
+    });
+});
+</script>

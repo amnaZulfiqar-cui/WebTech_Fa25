@@ -1,0 +1,349 @@
+<%- include('../partials/header') %>
+
+<!-- Hero Section -->
+<div class="hero-section bg-primary text-white rounded-3 p-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-3">Welcome to MyShop</h1>
+            <p class="lead mb-4">
+                Discover amazing products at unbeatable prices. 
+                Free shipping on orders over $50!
+            </p>
+            <a href="#products" class="btn btn-light btn-lg px-4">
+                <i class="bi bi-arrow-right me-2"></i>
+                Shop Now
+            </a>
+        </div>
+        <div class="col-lg-6 text-center">
+            <i class="bi bi-cart-check" style="font-size: 10rem; opacity: 0.8;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Products -->
+<% if (featuredProducts && featuredProducts.length > 0) { %>
+<section class="mb-5">
+    <h2 class="mb-4 border-bottom pb-2">
+        <i class="bi bi-star-fill text-warning me-2"></i>
+        Featured Products
+    </h2>
+    <div class="row">
+        <% featuredProducts.forEach(product => { %>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="position-relative">
+                    <img src="<%= product.image %>" 
+                         class="card-img-top product-image" 
+                         alt="<%= product.name %>"
+                         style="height: 200px; object-fit: cover;">
+                    <% if (product.featured) { %>
+                    <span class="position-absolute top-0 start-0 m-2 badge bg-warning">
+                        <i class="bi bi-star-fill me-1"></i>Featured
+                    </span>
+                    <% } %>
+                    <% if (product.stock < 5 && product.stock > 0) { %>
+                    <span class="position-absolute top-0 end-0 m-2 badge bg-danger">
+                        Only <%= product.stock %> left!
+                    </span>
+                    <% } %>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title"><%= product.name %></h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        <%= product.description.substring(0, 100) %>...
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="h5 text-primary fw-bold">
+                            $<%= product.price.toFixed(2) %>
+                        </span>
+                        <form action="/cart/add/<%= product._id %>" method="POST" class="d-inline">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi bi-cart-plus me-1"></i>Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="/products/<%= product._id %>" class="text-decoration-none">
+                        <small class="text-muted">
+                            <i class="bi bi-eye me-1"></i>View Details
+                        </small>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</section>
+<% } %>
+
+<!-- Products Section -->
+<section id="products">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="bi bi-grid me-2"></i>
+            All Products
+            <small class="text-muted fs-6">(<%= products.length %> products)</small>
+        </h2>
+        
+        <!-- Filters -->
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                    data-bs-toggle="dropdown">
+                <i class="bi bi-funnel me-1"></i>
+                Filters & Sort
+            </button>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="width: 300px;">
+                <form action="/products" method="GET">
+                    <!-- Category Filter -->
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" name="category">
+                            <option value="all" <%= !currentCategory || currentCategory === 'all' ? 'selected' : '' %>>All Categories</option>
+                            <% categories.forEach(cat => { %>
+                            <option value="<%= cat %>" 
+                                    <%= currentCategory === cat ? 'selected' : '' %>>
+                                <%= cat %>
+                            </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    
+                    <!-- Price Range -->
+                    <div class="mb-3">
+                        <label class="form-label">Price Range</label>
+                        <div class="row g-2">
+                            <div class="col">
+                                <input type="number" class="form-control" placeholder="Min" 
+                                       name="minPrice" value="<%= currentMinPrice || '' %>" min="0">
+                            </div>
+                            <div class="col">
+                                <input type="number" class="form-control" placeholder="Max" 
+                                       name="maxPrice" value="<%= currentMaxPrice || '' %>" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sort Options -->
+                    <div class="mb-3">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select" name="sort">
+                            <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                            <option value="price-low" <%= currentSort === 'price-low' ? 'selected' : '' %>>Price: Low to High</option>
+                            <option value="price-high" <%= currentSort === 'price-high' ? 'selected' : '' %>>Price: High to Low</option>
+                            <option value="name" <%= currentSort === 'name' ? 'selected' : '' %>>Name A-Z</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Search preserved -->
+                    <% if (currentSearch) { %>
+                    <input type="hidden" name="search" value="<%= currentSearch %>">
+                    <% } %>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-filter me-1"></i>
+                            Apply Filters
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Results Info -->
+    <% if (currentSearch) { %>
+    <div class="alert alert-info mb-4">
+        <i class="bi bi-search me-2"></i>
+        Search results for: "<strong><%= currentSearch %></strong>"
+        <a href="/products" class="float-end text-decoration-none">
+            <i class="bi bi-x-circle me-1"></i>Clear search
+        </a>
+    </div>
+    <% } %>
+    
+    <!-- Products Grid -->
+    <% if (products.length === 0) { %>
+    <div class="text-center py-5">
+        <i class="bi bi-emoji-frown" style="font-size: 4rem;"></i>
+        <h3 class="mt-3">No products found</h3>
+        <p class="text-muted">Try adjusting your search or filter criteria.</p>
+        <a href="/products" class="btn btn-primary mt-2">
+            <i class="bi bi-arrow-clockwise me-1"></i>
+            View All Products
+        </a>
+    </div>
+    <% } else { %>
+    <div class="row">
+        <% products.forEach(product => { %>
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 product-card shadow-sm">
+                <!-- Product Image -->
+                <div class="position-relative overflow-hidden">
+                    <a href="/products/<%= product._id %>" class="text-decoration-none">
+                        <img src="<%= product.image %>" 
+                             class="card-img-top product-image" 
+                             alt="<%= product.name %>"
+                             style="height: 200px; object-fit: cover; transition: transform 0.3s;">
+                    </a>
+                    
+                    <!-- Badges -->
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <% if (product.featured) { %>
+                        <span class="badge bg-warning mb-1">
+                            <i class="bi bi-star-fill me-1"></i>Featured
+                        </span>
+                        <% } %>
+                        <% if (product.stock === 0) { %>
+                        <span class="badge bg-danger">Out of Stock</span>
+                        <% } else if (product.stock < 5) { %>
+                        <span class="badge bg-danger">Low Stock</span>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="position-absolute bottom-0 end-0 m-2">
+                        <form action="/cart/add/<%= product._id %>" method="POST" class="d-inline">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" 
+                                    class="btn btn-primary btn-sm rounded-circle shadow"
+                                    <%= product.stock === 0 ? 'disabled' : '' %>
+                                    title="Add to Cart">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product Info -->
+                <div class="card-body d-flex flex-column">
+                    <!-- Category -->
+                    <small class="text-muted mb-1">
+                        <i class="bi bi-tag me-1"></i>
+                        <%= product.category %>
+                    </small>
+                    
+                    <!-- Name -->
+                    <h6 class="card-title mb-2">
+                        <a href="/products/<%= product._id %>" class="text-decoration-none text-dark">
+                            <%= product.name %>
+                        </a>
+                    </h6>
+                    
+                    <!-- Description -->
+                    <p class="card-text text-muted small flex-grow-1">
+                        <%= product.description.substring(0, 80) %>...
+                    </p>
+                    
+                    <!-- Price and Stock -->
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <div>
+                            <span class="h5 text-primary fw-bold">
+                                $<%= product.price.toFixed(2) %>
+                            </span>
+                            <% if (product.stock > 0) { %>
+                            <small class="text-success d-block">
+                                <i class="bi bi-check-circle me-1"></i>
+                                In Stock (<%= product.stock %>)
+                            </small>
+                            <% } else { %>
+                            <small class="text-danger d-block">
+                                <i class="bi bi-x-circle me-1"></i>
+                                Out of Stock
+                            </small>
+                            <% } %>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="btn-group" role="group">
+                            <a href="/products/<%= product._id %>" 
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <form action="/cart/add/<%= product._id %>" method="POST" class="d-inline">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" 
+                                        class="btn btn-outline-success btn-sm"
+                                        <%= product.stock === 0 ? 'disabled' : '' %>
+                                        title="Add to Cart">
+                                    <i class="bi bi-cart-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card Footer -->
+                <div class="card-footer bg-transparent border-top-0 pt-0">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar me-1"></i>
+                        Added <%= new Date(product.createdAt).toLocaleDateString() %>
+                    </small>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } %>
+    
+    <!-- Categories Quick Links -->
+    <div class="mt-5 pt-4 border-top">
+        <h4 class="mb-3">Shop by Category</h4>
+        <div class="row g-3">
+            <% categories.forEach(category => { %>
+            <div class="col-md-3 col-6">
+                <a href="/products?category=<%= category %>" 
+                   class="text-decoration-none">
+                    <div class="card category-card text-center p-3 hover-shadow">
+                        <i class="bi bi-tag" style="font-size: 2rem;"></i>
+                        <h6 class="mt-2 mb-0"><%= category %></h6>
+                    </div>
+                </a>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="my-5 py-4 bg-light rounded-3">
+    <div class="text-center">
+        <h3>Stay Updated</h3>
+        <p class="text-muted mb-4">Subscribe to our newsletter for the latest deals and offers</p>
+        <form class="row g-3 justify-content-center">
+            <div class="col-auto">
+                <input type="email" class="form-control" placeholder="Enter your email">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<%- include('../partials/footer') %>
+
+<!-- Product Card Hover Effect -->
+<style>
+.product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+.category-card {
+    transition: all 0.3s;
+}
+.category-card:hover {
+    background-color: var(--bs-primary);
+    color: white;
+}
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
+</style>

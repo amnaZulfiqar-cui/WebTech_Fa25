@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - BeMassage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+      .checkout-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .summary-box {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 30px;
+        margin-top: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+      .summary-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #333;
+        font-weight: 500;
+      }
+      .summary-price {
+        font-size: 1.4rem;
+        color: #b19c73;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .btn-massage {
+        background-color: #b19c73;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+      .btn-massage:hover {
+        background-color: #9a855e;
+        color: white;
+      }
+      .card-fields {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        margin-top: 20px;
+      }
+      .form-label {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 8px;
+      }
+      .form-control {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px 15px;
+      }
+      .form-control:focus {
+        border-color: #b19c73;
+        box-shadow: 0 0 0 0.2rem rgba(177, 156, 115, 0.25);
+      }
+      .form-check-input:checked {
+        background-color: #b19c73;
+        border-color: #b19c73;
+      }
+      .invalid-feedback {
+        display: none;
+      }
+      .was-validated .form-control:invalid ~ .invalid-feedback,
+      .was-validated .form-check-input:invalid ~ .invalid-feedback {
+        display: block;
+      }
+      h2 {
+        color: #333;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #b19c73;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img src="/images/mid-logo.png" alt="BeMassage" height="40" />
+        </a>
+        <a href="/treatments" class="btn btn-outline-secondary"
+          >Back to Treatments</a
+        >
+      </div>
+    </nav>
+
+    <div class="container checkout-container">
+      <!-- Page Header -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h1 class="text-center mb-3">Complete Your Booking</h1>
+          <p class="text-center text-muted">
+            Fill in your details to confirm your massage appointment
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Payment Details</h2>
+          <form id="checkout-form" action="/checkout" method="POST" novalidate>
+            <input
+              type="hidden"
+              name="treatment"
+              id="treatment-input"
+              value="<%= treatment %>"
+            />
+            <input
+              type="hidden"
+              name="price"
+              id="price-input"
+              value="<%= price %>"
+            />
+
+            <!-- Personal Information -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+                minlength="3"
+              />
+              <div class="invalid-feedback">
+                Please enter your full name (at least 3 characters).
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+              />
+              <div class="invalid-feedback">
+                Please enter a valid email address.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number *</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                name="phone"
+                required
+                pattern="[0-9]{10,}"
+              />
+              <div class="invalid-feedback">
+                Please enter a valid phone number (digits only, at least 10
+                digits).
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label">Address *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="address"
+                name="address"
+                required
+              />
+              <div class="invalid-feedback">Please enter your address.</div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="city" class="form-label">City *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  name="city"
+                  required
+                />
+                <div class="invalid-feedback">Please enter your city.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="postal" class="form-label">Postal Code *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postal"
+                  name="postal"
+                  required
+                  pattern="[0-9]{4,6}"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid postal code (4-6 digits).
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="country" class="form-label">Country *</label>
+              <select class="form-select" id="country" name="country" required>
+                <option value="">Select Country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="UK">United Kingdom</option>
+                <option value="AU">Australia</option>
+                <option value="NZ">New Zealand</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+              </select>
+              <div class="invalid-feedback">Please select your country.</div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-3">
+              <label class="form-label">Payment Method *</label>
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="card"
+                  value="card"
+                  required
+                />
+                <label class="form-check-label" for="card">
+                  Credit/Debit Card
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="paypal"
+                  value="paypal"
+                />
+                <label class="form-check-label" for="paypal">PayPal</label>
+              </div>
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="cash"
+                  value="cash"
+                />
+                <label class="form-check-label" for="cash"
+                  >Cash on Arrival</label
+                >
+              </div>
+              <div class="invalid-feedback">
+                Please select a payment method.
+              </div>
+            </div>
+
+            <!-- Card Fields (Conditional) -->
+            <div id="cardFields" class="card-fields" style="display: none">
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Card Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardNumber"
+                  name="cardNumber"
+                  pattern="[0-9]{13,19}"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid card number (13-19 digits).
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="expiry" class="form-label">Expiry Date</label>
+                  <input
+                    type="month"
+                    class="form-control"
+                    id="expiry"
+                    name="expiry"
+                  />
+                  <div class="invalid-feedback">
+                    Please enter a valid expiry date.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cvv"
+                    name="cvv"
+                    pattern="[0-9]{3,4}"
+                  />
+                  <div class="invalid-feedback">
+                    Please enter a valid CVV (3-4 digits).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="mb-4 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="terms"
+                name="terms"
+                required
+              />
+              <label class="form-check-label" for="terms">
+                I agree to the
+                <a href="/terms" target="_blank">terms and conditions</a> *
+              </label>
+              <div class="invalid-feedback">
+                You must agree to the terms and conditions.
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-massage" id="submit-btn">
+              Complete Booking - $<span id="submit-price"><%= price %></span>
+            </button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <h2>Order Summary</h2>
+          <div class="summary-box">
+            <h4 class="mb-4">Booking Details</h4>
+            <div class="mb-3">
+              <p class="summary-title">
+                <strong>Treatment:</strong>
+                <span id="treatment-name"><%= treatment %></span>
+              </p>
+              <p class="summary-price">
+                <strong>Price:</strong> $<span id="treatment-price"
+                  ><%= price %></span
+                >
+              </p>
+            </div>
+            <hr />
+            <div class="mb-3">
+              <h5>What's Included:</h5>
+              <ul class="list-unstyled">
+                <li>✓ Professional massage therapist</li>
+                <li>✓ Premium oils and lotions</li>
+                <li>✓ Relaxing ambiance</li>
+                <li>✓ Post-massage consultation</li>
+                <li>✓ Flexible scheduling</li>
+              </ul>
+            </div>
+            <div class="alert alert-info">
+              <small
+                ><i class="bi bi-info-circle"></i> Your appointment will be
+                confirmed via email within 24 hours.</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-4">
+      <div class="container text-center">
+        <p class="text-muted mb-0">© 2024 BeMassage. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Form validation
+      (function () {
+        "use strict";
+
+        const form = document.getElementById("checkout-form");
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Show/hide card fields based on payment method
+        const paymentRadios = document.querySelectorAll(
+          'input[name="paymentMethod"]'
+        );
+        const cardFields = document.getElementById("cardFields");
+
+        paymentRadios.forEach((radio) => {
+          radio.addEventListener("change", function () {
+            if (this.value === "card") {
+              cardFields.style.display = "block";
+              // Make card fields required when card payment is selected
+              document.getElementById("cardNumber").required = true;
+              document.getElementById("expiry").required = true;
+              document.getElementById("cvv").required = true;
+            } else {
+              cardFields.style.display = "none";
+              // Remove required attribute when card payment is not selected
+              document.getElementById("cardNumber").required = false;
+              document.getElementById("expiry").required = false;
+              document.getElementById("cvv").required = false;
+            }
+          });
+        });
+
+        // Form submission with validation
+        form.addEventListener("submit", function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          form.classList.add("was-validated");
+
+          // Additional custom validation
+          const phone = document.getElementById("phone");
+          const postal = document.getElementById("postal");
+
+          if (phone.value && !/^\d{10,}$/.test(phone.value)) {
+            phone.setCustomValidity("Phone number must be at least 10 digits");
+          } else {
+            phone.setCustomValidity("");
+          }
+
+          if (postal.value && !/^\d{4,6}$/.test(postal.value)) {
+            postal.setCustomValidity("Postal code must be 4-6 digits");
+          } else {
+            postal.setCustomValidity("");
+          }
+
+          // Validate card fields if card payment is selected
+          const cardSelected = document.getElementById("card").checked;
+          if (cardSelected) {
+            const cardNumber = document.getElementById("cardNumber");
+            const expiry = document.getElementById("expiry");
+            const cvv = document.getElementById("cvv");
+
+            if (!cardNumber.value || !/^\d{13,19}$/.test(cardNumber.value)) {
+              cardNumber.setCustomValidity(
+                "Please enter a valid 13-19 digit card number"
+              );
+              event.preventDefault();
+            }
+
+            if (expiry.value) {
+              const expiryDate = new Date(expiry.value + "-01");
+              const today = new Date();
+              if (expiryDate < today) {
+                expiry.setCustomValidity("Card has expired");
+                event.preventDefault();
+              }
+            }
+
+            if (!cvv.value || !/^\d{3,4}$/.test(cvv.value)) {
+              cvv.setCustomValidity("Please enter a valid 3-4 digit CVV");
+              event.preventDefault();
+            }
+          }
+
+          // If form is valid, show loading state
+          if (form.checkValidity()) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML =
+              '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+          }
+        });
+
+        // Real-time validation
+        const inputs = form.querySelectorAll("input, select");
+        inputs.forEach((input) => {
+          input.addEventListener("input", function () {
+            if (this.checkValidity()) {
+              this.classList.remove("is-invalid");
+              this.classList.add("is-valid");
+            } else {
+              this.classList.remove("is-valid");
+              this.classList.add("is-invalid");
+            }
+          });
+
+          input.addEventListener("blur", function () {
+            this.checkValidity();
+          });
+        });
+
+        // Initialize form with validation
+        form.addEventListener("reset", function () {
+          form.classList.remove("was-validated");
+          inputs.forEach((input) => {
+            input.classList.remove("is-valid", "is-invalid");
+          });
+          cardFields.style.display = "none";
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - BeMassage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --massage-gold: #b19c73;
+        --massage-light: #f5f0eb;
+        --massage-dark: #333333;
+      }
+
+      .about-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("/images/about-bg.jpg") center/cover no-repeat;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 300;
+        margin-bottom: 20px;
+      }
+
+      .about-hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0.9;
+      }
+
+      .divider {
+        width: 100px;
+        height: 3px;
+        background-color: var(--massage-gold);
+        margin: 20px auto 40px;
+      }
+
+      .lead {
+        color: var(--massage-dark);
+        font-size: 1.25rem;
+        line-height: 1.6;
+      }
+
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title {
+        color: var(--massage-gold);
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .card-body {
+        padding: 30px;
+      }
+
+      .btn-massage {
+        background-color: var(--massage-gold);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-massage:hover {
+        background-color: #9a855e;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-massage {
+        border: 2px solid var(--massage-gold);
+        color: var(--massage-gold);
+        background: transparent;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-massage:hover {
+        background-color: var(--massage-gold);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      h2,
+      h3 {
+        color: var(--massage-dark);
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 2.5rem;
+      }
+
+      h3 {
+        font-size: 1.8rem;
+        position: relative;
+        padding-bottom: 15px;
+      }
+
+      h3:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--massage-gold);
+      }
+
+      p {
+        line-height: 1.8;
+        color: #555;
+        font-size: 1.1rem;
+      }
+
+      .stats-section {
+        background-color: var(--massage-light);
+        padding: 80px 0;
+        margin: 80px 0;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--massage-gold);
+        margin-bottom: 10px;
+      }
+
+      .stat-text {
+        font-size: 1.1rem;
+        color: var(--massage-dark);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .values-section {
+        margin: 80px 0;
+      }
+
+      .value-item {
+        text-align: center;
+        padding: 30px;
+      }
+
+      .value-icon {
+        font-size: 2.5rem;
+        color: var(--massage-gold);
+        margin-bottom: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .about-hero {
+          padding: 60px 0;
+        }
+
+        .about-hero h1 {
+          font-size: 2.5rem;
+        }
+
+        h2 {
+          font-size: 2rem;
+        }
+
+        h3 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img src="/images/mid-logo.png" alt="BeMassage" height="40" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/treatments">Treatments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <h1>About BeMassage</h1>
+        <p>Experience the art of healing and the science of wellness</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="text-center mb-5">
+            <h2>Our Philosophy</h2>
+            <div class="divider"></div>
+            <p class="lead">
+              At BeMassage, we believe that true wellness comes from harmony
+              between body, mind, and spirit.
+            </p>
+          </div>
+
+          <!-- Our Story -->
+          <div class="mb-5">
+            <h3>Our Story</h3>
+            <p>
+              Founded with a passion for wellness and holistic healing,
+              BeMassage has been providing professional massage services for
+              over 10 years. Our journey began with a simple mission: to help
+              people find balance and peace in their busy lives.
+            </p>
+            <p>
+              What started as a small studio with two therapists has grown into
+              a sanctuary of wellness, serving thousands of clients and training
+              dozens of therapists in our unique approach to massage therapy.
+            </p>
+          </div>
+
+          <!-- Our Mission -->
+          <div class="mb-5">
+            <h3>Our Mission</h3>
+            <p>
+              To provide exceptional massage therapy services that promote
+              physical, mental, and emotional well-being. We believe in the
+              healing power of touch and are committed to helping our clients
+              achieve optimal health and relaxation.
+            </p>
+            <p>
+              We strive to create a sanctuary where clients can escape the
+              stresses of daily life and reconnect with their bodies and inner
+              peace.
+            </p>
+          </div>
+
+          <!-- Stats Section -->
+          <section class="stats-section rounded">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-3 col-6">
+                  <div class="stat-item">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-text">Years Experience</div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6">
+                  <div class="stat-item">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-text">Happy Clients</div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6">
+                  <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-text">Expert Therapists</div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6">
+                  <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-text">Satisfaction</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Our Therapists -->
+          <div class="mb-5">
+            <h3>Our Therapists</h3>
+            <p>
+              Our team of certified massage therapists brings years of
+              experience and specialized training in various massage techniques.
+              Each therapist is dedicated to providing personalized care and
+              creating a calming, therapeutic environment for every client.
+            </p>
+            <p>
+              All our therapists undergo rigorous training and continuous
+              education to stay updated with the latest techniques and wellness
+              practices. They are not just skilled professionals but also
+              compassionate healers who genuinely care about your well-being.
+            </p>
+          </div>
+
+          <!-- Our Values -->
+          <section class="values-section">
+            <h3 class="text-center mb-5">Our Core Values</h3>
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                <div class="value-item">
+                  <div class="value-icon">
+                    <i class="fas fa-heart"></i>
+                  </div>
+                  <h4>Compassion</h4>
+                  <p>
+                    We approach every client with empathy, understanding, and
+                    genuine care for their well-being.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="value-item">
+                  <div class="value-icon">
+                    <i class="fas fa-award"></i>
+                  </div>
+                  <h4>Excellence</h4>
+                  <p>
+                    We are committed to providing the highest quality service
+                    through continuous learning and improvement.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-4">
+                <div class="value-item">
+                  <div class="value-icon">
+                    <i class="fas fa-hands-helping"></i>
+                  </div>
+                  <h4>Integrity</h4>
+                  <p>
+                    We maintain the highest ethical standards in all our
+                    interactions and recommendations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Why Choose Us -->
+          <div class="mb-5">
+            <h3>Why Choose BeMassage</h3>
+            <p class="mb-4">
+              Experience the difference with our comprehensive approach to
+              wellness and relaxation.
+            </p>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="fas fa-user-md me-2"></i>Expert Therapists
+                    </h5>
+                    <p class="card-text">
+                      Our licensed professionals have extensive training and
+                      years of experience in various massage modalities,
+                      ensuring you receive expert care.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="fas fa-gem me-2"></i>Premium Quality
+                    </h5>
+                    <p class="card-text">
+                      We use only the highest quality organic oils, lotions, and
+                      state-of-the-art equipment to enhance your therapeutic
+                      experience.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="fas fa-cogs me-2"></i>Customized Sessions
+                    </h5>
+                    <p class="card-text">
+                      Every treatment is carefully tailored to your specific
+                      needs, preferences, and wellness goals for optimal
+                      results.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <i class="fas fa-spa me-2"></i>Relaxing Environment
+                    </h5>
+                    <p class="card-text">
+                      Our spa is meticulously designed to provide ultimate
+                      comfort, tranquility, and a complete sensory escape from
+                      daily stress.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div class="text-center mt-5 pt-5">
+            <h3 class="mb-4">Ready to Experience True Relaxation?</h3>
+            <p class="mb-4">
+              Book your appointment today and begin your journey to wellness.
+            </p>
+            <div
+              class="d-flex flex-column flex-md-row justify-content-center gap-3"
+            >
+              <a href="/treatments" class="btn btn-massage">
+                <i class="fas fa-spa me-2"></i>View Treatments
+              </a>
+              <a href="/checkout" class="btn btn-outline-massage">
+                <i class="fas fa-calendar-alt me-2"></i>Book Appointment
+              </a>
+              <a href="/contact" class="btn btn-outline-secondary">
+                <i class="fas fa-phone me-2"></i>Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <img
+              src="/images/mid-logo.png"
+              alt="BeMassage"
+              height="40"
+              class="mb-3"
+            />
+            <p>Your sanctuary for healing, relaxation, and wellness.</p>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="/" class="text-white-50 text-decoration-none">Home</a>
+              </li>
+              <li>
+                <a href="/about" class="text-white-50 text-decoration-none"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a href="/treatments" class="text-white-50 text-decoration-none"
+                  >Treatments</a
+                >
+              </li>
+              <li>
+                <a href="/contact" class="text-white-50 text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5>Contact Info</h5>
+            <p class="mb-1">
+              <i class="fas fa-map-marker-alt me-2"></i>123 Wellness Street
+            </p>
+            <p class="mb-1"><i class="fas fa-phone me-2"></i>(123) 456-7890</p>
+            <p class="mb-0">
+              <i class="fas fa-envelope me-2"></i>info@bemassage.com
+            </p>
+          </div>
+        </div>
+        <hr class="bg-white-50" />
+        <div class="text-center pt-3">
+          <p class="mb-0">&copy; 2024 BeMassage. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Simple animation for stats counting
+      document.addEventListener("DOMContentLoaded", function () {
+        const statNumbers = document.querySelectorAll(".stat-number");
+
+        statNumbers.forEach((stat) => {
+          const target = parseInt(stat.textContent);
+          let current = 0;
+          const increment = target / 50;
+
+          const updateCount = () => {
+            if (current < target) {
+              current += increment;
+              stat.textContent =
+                Math.floor(current) +
+                (stat.textContent.includes("+") ? "+" : "");
+              setTimeout(updateCount, 30);
+            } else {
+              stat.textContent =
+                target + (stat.textContent.includes("+") ? "+" : "");
+            }
+          };
+
+          // Start counting when element is in viewport
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                updateCount();
+                observer.unobserve(entry.target);
+              }
+            });
+          });
+
+          observer.observe(stat);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<div id="Header_wrapper">
+  <header id="Header">
+    <div class="header_placeholder"></div>
+    <div id="Top_bar">
+      <div class="container-a">
+        <div class="top_bar_left">
+          <div class="logo">
+            <a href="/">
+              <img src="/images/logo.png" alt="BeMassage Logo" />
+            </a>
+          </div>
+          <div class="menu_wrapper">
+            <ul class="menu_left">
+              <li><a href="/treatments">TREATMENTS</a></li>
+              <li><a href="#">THERAPISTS</a></li>
+              <li><a href="/about">ABOUT US</a></li>
+            </ul>
+            <ul class="menu_right">
+              <li><a href="#">PRICING</a></li>
+              <li><a href="#">CONTACT</a></li>
+              <li><a href="/admin" style="color: #d04302">ADMIN</a></li>
+            </ul>
+          </div>
+          <div class="mobile-menu-toggle">☰</div>
+        </div>
+      </div>
+    </div>
+    <% if (showSubheader) { %>
+    <div id="Subheader">
+      <div class="container">
+        <h1 class="title"><%= subheaderTitle || title %></h1>
+      </div>
+    </div>
+    <% } %>
+  </header>
+</div>

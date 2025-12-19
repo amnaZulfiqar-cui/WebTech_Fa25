@@ -1,0 +1,488 @@
+<%- include('../partials/header') %>
+
+<!-- Admin Dashboard Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h2 mb-0">
+      <i class="bi bi-speedometer2 me-2"></i>
+      Admin Dashboard
+    </h1>
+    <p class="text-muted mb-0">Welcome to the administration panel</p>
+  </div>
+  <div class="dropdown">
+    <button
+      class="btn btn-outline-secondary dropdown-toggle"
+      type="button"
+      data-bs-toggle="dropdown"
+    >
+      <i class="bi bi-gear me-2"></i>
+      Quick Actions
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <a class="dropdown-item" href="/admin/products/new">
+          <i class="bi bi-plus-circle me-2"></i>Add New Product
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="/admin/orders">
+          <i class="bi bi-list-ul me-2"></i>View All Orders
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="/admin/reports">
+          <i class="bi bi-bar-chart me-2"></i>View Reports
+        </a>
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+      <li>
+        <a class="dropdown-item" href="/">
+          <i class="bi bi-shop me-2"></i>View Store
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-primary border-4 shadow-sm h-100">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+              Total Orders
+            </div>
+            <div class="h5 mb-0 fw-bold"><%= totalOrders %></div>
+            <div class="mt-2">
+              <span class="text-success small">
+                <i class="bi bi-arrow-up me-1"></i>
+                12%
+              </span>
+              <span class="text-muted small">from last month</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-cart-check fa-2x text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-success border-4 shadow-sm h-100">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+              Total Revenue
+            </div>
+            <div class="h5 mb-0 fw-bold">$<%= totalRevenue.toFixed(2) %></div>
+            <div class="mt-2">
+              <span class="text-success small">
+                <i class="bi bi-arrow-up me-1"></i>
+                8%
+              </span>
+              <span class="text-muted small">from last month</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-currency-dollar fa-2x text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-warning border-4 shadow-sm h-100">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+              Pending Orders
+            </div>
+            <div class="h5 mb-0 fw-bold"><%= pendingOrders %></div>
+            <div class="mt-2">
+              <span class="text-danger small">
+                <i class="bi bi-arrow-down me-1"></i>
+                3%
+              </span>
+              <span class="text-muted small">from last week</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-clock-history fa-2x text-warning"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-info border-4 shadow-sm h-100">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <div class="text-xs fw-bold text-info text-uppercase mb-1">
+              Total Products
+            </div>
+            <div class="h5 mb-0 fw-bold"><%= totalProducts %></div>
+            <div class="mt-2">
+              <span class="text-success small">
+                <i class="bi bi-arrow-up me-1"></i>
+                5%
+              </span>
+              <span class="text-muted small">from last month</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="bi bi-box-seam fa-2x text-info"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Recent Orders -->
+  <div class="col-lg-8 mb-4">
+    <div class="card shadow-sm h-100">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">
+          <i class="bi bi-clock-history me-2"></i>
+          Recent Orders
+        </h5>
+        <a href="/admin/orders" class="btn btn-sm btn-outline-primary">
+          View All
+        </a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (recentOrders.length === 0) { %>
+              <tr>
+                <td colspan="6" class="text-center py-4">
+                  <i class="bi bi-inbox text-muted" style="font-size: 2rem"></i>
+                  <p class="mt-2 mb-0">No recent orders</p>
+                </td>
+              </tr>
+              <% } else { %> <% recentOrders.forEach(order => { %>
+              <tr>
+                <td>
+                  <strong class="text-primary"><%= order.orderId %></strong>
+                </td>
+                <td>
+                  <div><%= order.customerName || 'Guest' %></div>
+                  <small class="text-muted"><%= order.customerEmail %></small>
+                </td>
+                <td>
+                  <%= new Date(order.createdAt).toLocaleDateString() %>
+                  <br />
+                  <small class="text-muted"
+                    ><%= new Date(order.createdAt).toLocaleTimeString([], {hour:
+                    '2-digit', minute:'2-digit'}) %></small
+                  >
+                </td>
+                <td>
+                  <strong>$<%= order.total.toFixed(2) %></strong>
+                </td>
+                <td>
+                  <% let statusClass = 'secondary'; switch(order.status) { case
+                  'Placed': statusClass = 'info'; break; case 'Processing':
+                  statusClass = 'primary'; break; case 'Shipped': statusClass =
+                  'warning'; break; case 'Delivered': statusClass = 'success';
+                  break; case 'Cancelled': statusClass = 'danger'; break; } %>
+                  <span class="badge bg-<%= statusClass %>">
+                    <%= order.status %>
+                  </span>
+                </td>
+                <td>
+                  <a
+                    href="/admin/orders/<%= order._id %>"
+                    class="btn btn-sm btn-outline-primary"
+                  >
+                    View
+                  </a>
+                </td>
+              </tr>
+              <% }) %> <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Stock Products -->
+  <div class="col-lg-4 mb-4">
+    <div class="card shadow-sm h-100">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Low Stock Alert
+        </h5>
+        <a href="/admin/products" class="btn btn-sm btn-outline-primary">
+          Manage
+        </a>
+      </div>
+      <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+          <% if (lowStockProducts.length === 0) { %>
+          <div class="text-center py-4">
+            <i
+              class="bi bi-check-circle text-success"
+              style="font-size: 2rem"
+            ></i>
+            <p class="mt-2 mb-0">All products are well stocked</p>
+          </div>
+          <% } else { %> <% lowStockProducts.forEach(product => { %>
+          <a
+            href="/admin/products/<%= product._id %>/edit"
+            class="list-group-item list-group-item-action"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1"><%= product.name %></h6>
+                <small class="text-muted"
+                  >SKU: PROD-<%= product._id.toString().substring(0, 8)
+                  %></small
+                >
+              </div>
+              <div class="text-end">
+                <span class="badge bg-danger"> <%= product.stock %> left </span>
+                <div class="mt-1">
+                  <small class="text-muted"
+                    >$<%= product.price.toFixed(2) %></small
+                  >
+                </div>
+              </div>
+            </div>
+          </a>
+          <% }) %> <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Quick Links</h5>
+        <div class="row g-3">
+          <div class="col-md-3 col-6">
+            <a
+              href="/admin/products"
+              class="card quick-link-card text-decoration-none"
+            >
+              <div class="card-body text-center">
+                <i
+                  class="bi bi-box-seam text-primary"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mt-2 mb-0">Products</h6>
+                <small class="text-muted">Manage products</small>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3 col-6">
+            <a
+              href="/admin/orders"
+              class="card quick-link-card text-decoration-none"
+            >
+              <div class="card-body text-center">
+                <i
+                  class="bi bi-cart-check text-success"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mt-2 mb-0">Orders</h6>
+                <small class="text-muted">View all orders</small>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3 col-6">
+            <a
+              href="/admin/reports"
+              class="card quick-link-card text-decoration-none"
+            >
+              <div class="card-body text-center">
+                <i
+                  class="bi bi-bar-chart text-info"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mt-2 mb-0">Reports</h6>
+                <small class="text-muted">Sales analytics</small>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3 col-6">
+            <a
+              href="/admin/products/new"
+              class="card quick-link-card text-decoration-none"
+            >
+              <div class="card-body text-center">
+                <i
+                  class="bi bi-plus-circle text-warning"
+                  style="font-size: 2rem"
+                ></i>
+                <h6 class="mt-2 mb-0">Add Product</h6>
+                <small class="text-muted">Create new product</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="bi bi-activity me-2"></i>
+          Recent Activity
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker bg-primary"></div>
+            <div class="timeline-content">
+              <small class="text-muted">Just now</small>
+              <p class="mb-0">You logged in to the admin panel</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker bg-success"></div>
+            <div class="timeline-content">
+              <small class="text-muted">2 hours ago</small>
+              <p class="mb-0">
+                New order #ORD-123456 placed by customer@example.com
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker bg-info"></div>
+            <div class="timeline-content">
+              <small class="text-muted">Yesterday</small>
+              <p class="mb-0">Product "Wireless Headphones" was updated</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker bg-warning"></div>
+            <div class="timeline-content">
+              <small class="text-muted">2 days ago</small>
+              <p class="mb-0">Weekly sales report was generated</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Admin Dashboard Styles -->
+<style>
+  .quick-link-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #dee2e6;
+  }
+  .quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: var(--bs-primary);
+  }
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 20px;
+  }
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+  .timeline-marker {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+  }
+  .timeline-content {
+    padding-left: 10px;
+  }
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+</style>
+
+<script>
+  // Refresh stats every 60 seconds
+  setInterval(() => {
+    fetch("/admin?partial=stats")
+      .then((response) => response.text())
+      .then((html) => {
+        // Update stats section
+        document.querySelector(".row.mb-4").innerHTML = html;
+      })
+      .catch((error) => console.error("Error refreshing stats:", error));
+  }, 60000);
+
+  // Auto-refresh recent orders
+  setInterval(() => {
+    fetch("/admin/orders?limit=5")
+      .then((response) => response.text())
+      .then((html) => {
+        // Update recent orders table
+        const tableBody = document.querySelector(".table tbody");
+        if (tableBody) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const newRows = doc.querySelector("tbody");
+          if (newRows) {
+            tableBody.innerHTML = newRows.innerHTML;
+          }
+        }
+      })
+      .catch((error) => console.error("Error refreshing orders:", error));
+  }, 30000);
+
+  // Initialize tooltips
+  document.addEventListener("DOMContentLoaded", function () {
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach((tooltip) => {
+      new bootstrap.Tooltip(tooltip);
+    });
+  });
+</script>

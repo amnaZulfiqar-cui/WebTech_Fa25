@@ -1,0 +1,631 @@
+<%- include('../partials/header') %>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/admin/orders">Orders</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Order <%= order.orderId %></li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-0">
+            <i class="bi bi-receipt me-2"></i>
+            Order <%= order.orderId %>
+        </h1>
+        <p class="text-muted mb-0">
+            Placed on <%= new Date(order.createdAt).toLocaleString() %>
+        </p>
+    </div>
+    <div>
+        <a href="/admin/orders" class="btn btn-outline-secondary me-2">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Orders
+        </a>
+        <a href="javascript:void(0)" onclick="printInvoice()" class="btn btn-outline-primary">
+            <i class="bi bi-printer me-2"></i>
+            Print Invoice
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Order Details -->
+    <div class="col-lg-8">
+        <!-- Order Status Card -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Order Status & Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h6>Current Status</h6>
+                        <% 
+                            let statusClass = 'secondary';
+                            switch(order.status) {
+                                case 'Placed': statusClass = 'info'; break;
+                                case 'Processing': statusClass = 'primary'; break;
+                                case 'Shipped': statusClass = 'warning'; break;
+                                case 'Delivered': statusClass = 'success'; break;
+                                case 'Cancelled': statusClass = 'danger'; break;
+                            }
+                        %>
+                        <span class="badge bg-<%= statusClass %>" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
+                            <%= order.status %>
+                        </span>
+                        
+                        <% if (order.deliveredAt) { %>
+                        <p class="mt-2 mb-0">
+                            <small class="text-muted">
+                                Delivered on: <%= new Date(order.deliveredAt).toLocaleString() %>
+                            </small>
+                        </p>
+                        <% } %>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Update Status</h6>
+                        <form action="/admin/orders/<%= order._id %>/status" method="POST">
+                            <div class="input-group">
+                                <select name="status" class="form-select" <%= order.status === 'Delivered' || order.status === 'Cancelled' ? 'disabled' : '' %>>
+                                    <% if (validNextStatuses.includes('Processing')) { %>
+                                    <option value="Processing">Processing</option>
+                                    <% } %>
+                                    <% if (validNextStatuses.includes('Shipped')) { %>
+                                    <option value="Shipped">Shipped</option>
+                                    <% } %>
+                                    <% if (validNextStatuses.includes('Delivered')) { %>
+                                    <option value="Delivered">Delivered</option>
+                                    <% } %>
+                                    <% if (validNextStatuses.includes('Cancelled')) { %>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <% } %>
+                                </select>
+                                <button type="submit" class="btn btn-primary" <%= order.status === 'Delivered' || order.status === 'Cancelled' ? 'disabled' : '' %>>
+                                    Update
+                                </button>
+                            </div>
+                            <small class="text-muted mt-2 d-block">
+                                Valid next statuses: <%= validNextStatuses.join(', ') %>
+                            </small>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Status Timeline -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6>Order Timeline</h6>
+                    <div class="timeline">
+                        <div class="timeline-item <%= order.status === 'Placed' ? 'active' : '' %>">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <small class="text-muted">Placed</small>
+                                <p class="mb-0"><%= new Date(order.createdAt).toLocaleString() %></p>
+                            </div>
+                        </div>
+                        
+                        <% if (order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered') { %>
+                        <div class="timeline-item <%= order.status === 'Processing' ? 'active' : '' %>">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <small class="text-muted">Processing</small>
+                                <p class="mb-0">Order is being prepared</p>
+                            </div>
+                        </div>
+                        <% } %>
+                        
+                        <% if (order.status === 'Shipped' || order.status === 'Delivered') { %>
+                        <div class="timeline-item <%= order.status === 'Shipped' ? 'active' : '' %>">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <small class="text-muted">Shipped</small>
+                                <p class="mb-0">Order has been shipped</p>
+                            </div>
+                        </div>
+                        <% } %>
+                        
+                        <% if (order.status === 'Delivered') { %>
+                        <div class="timeline-item active">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <small class="text-muted">Delivered</small>
+                                <p class="mb-0"><%= new Date(order.deliveredAt).toLocaleString() %></p>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Items -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-cart-check me-2"></i>
+                    Order Items (<%= order.items.length %> items)
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.items.forEach(item => { %>
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <% if (item.productId && item.productId.image) { %>
+                                        <img src="<%= item.productId.image %>" 
+                                             alt="<%= item.name %>" 
+                                             class="rounded me-3"
+                                             style="width: 60px; height: 60px; object-fit: cover;">
+                                        <% } %>
+                                        <div>
+                                            <h6 class="mb-1"><%= item.name %></h6>
+                                            <% if (item.productId) { %>
+                                            <small class="text-muted">
+                                                SKU: PROD-<%= item.productId._id.toString().substring(0, 8) %>
+                                            </small>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">$<%= item.price.toFixed(2) %></td>
+                                <td class="text-center align-middle"><%= item.quantity %></td>
+                                <td class="text-end align-middle">
+                                    <strong>$<%= item.subtotal.toFixed(2) %></strong>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Notes -->
+        <% if (order.notes) { %>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-chat-left-text me-2"></i>
+                    Order Notes
+                </h5>
+            </div>
+            <div class="card-body">
+                <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit;"><%= order.notes %></pre>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    
+    <!-- Customer & Payment Info -->
+    <div class="col-lg-4">
+        <!-- Customer Information -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Customer Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th style="width: 40%;">Email:</th>
+                        <td>
+                            <a href="mailto:<%= order.customerEmail %>">
+                                <%= order.customerEmail %>
+                            </a>
+                        </td>
+                    </tr>
+                    <% if (order.customerName) { %>
+                    <tr>
+                        <th>Name:</th>
+                        <td><%= order.customerName %></td>
+                    </tr>
+                    <% } %>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>
+                            <a href="tel:<%= order.phone || '' %>">
+                                <%= order.phone || 'Not provided' %>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Customer Since:</th>
+                        <td>
+                            <% 
+                                const firstOrderDate = new Date(order.createdAt);
+                                const today = new Date();
+                                const diffTime = Math.abs(today - firstOrderDate);
+                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            %>
+                            <%= diffDays %> days ago
+                        </td>
+                    </tr>
+                </table>
+                
+                <div class="mt-3">
+                    <a href="mailto:<%= order.customerEmail %>?subject=Order%20<%= order.orderId %>" 
+                       class="btn btn-outline-primary btn-sm w-100">
+                        <i class="bi bi-envelope me-2"></i>
+                        Email Customer
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shipping Address -->
+        <% if (order.shippingAddress && order.shippingAddress.street) { %>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-truck me-2"></i>
+                    Shipping Address
+                </h5>
+            </div>
+            <div class="card-body">
+                <address class="mb-0">
+                    <%= order.shippingAddress.street %><br>
+                    <% if (order.shippingAddress.city) { %><%= order.shippingAddress.city %>, <% } %>
+                    <% if (order.shippingAddress.state) { %><%= order.shippingAddress.state %> <% } %>
+                    <% if (order.shippingAddress.zipCode) { %><%= order.shippingAddress.zipCode %><br><% } %>
+                    <% if (order.shippingAddress.country) { %><%= order.shippingAddress.country %><% } %>
+                </address>
+                
+                <div class="mt-3">
+                    <a href="https://maps.google.com/?q=<%= encodeURIComponent(order.shippingAddress.street + ' ' + order.shippingAddress.city + ' ' + order.shippingAddress.state + ' ' + order.shippingAddress.zipCode) %>" 
+                       target="_blank"
+                       class="btn btn-outline-secondary btn-sm w-100">
+                        <i class="bi bi-map me-2"></i>
+                        View on Map
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        
+        <!-- Payment Information -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-credit-card me-2"></i>
+                    Payment Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th style="width: 40%;">Method:</th>
+                        <td><%= order.paymentMethod %></td>
+                    </tr>
+                    <tr>
+                        <th>Subtotal:</th>
+                        <td>$<%= order.subtotal.toFixed(2) %></td>
+                    </tr>
+                    <% if (order.shipping > 0) { %>
+                    <tr>
+                        <th>Shipping:</th>
+                        <td>$<%= order.shipping.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <% if (order.tax > 0) { %>
+                    <tr>
+                        <th>Tax:</th>
+                        <td>$<%= order.tax.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <% if (order.discount > 0) { %>
+                    <tr>
+                        <th class="text-success">Discount:</th>
+                        <td class="text-success">-$<%= order.discount.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <tr>
+                        <th><strong>Total:</strong></th>
+                        <td><strong>$<%= order.total.toFixed(2) %></strong></td>
+                    </tr>
+                </table>
+                
+                <% if (order.discountCode) { %>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="bi bi-tag me-1"></i>
+                        Coupon used: <strong><%= order.discountCode %></strong>
+                    </small>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning me-2"></i>
+                    Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <% if (order.status === 'Placed') { %>
+                    <form action="/admin/orders/<%= order._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="Processing">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-play-circle me-2"></i>
+                            Start Processing
+                        </button>
+                    </form>
+                    <% } %>
+                    
+                    <% if (order.status === 'Processing') { %>
+                    <form action="/admin/orders/<%= order._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="Shipped">
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-truck me-2"></i>
+                            Mark as Shipped
+                        </button>
+                    </form>
+                    <% } %>
+                    
+                    <% if (order.status === 'Shipped') { %>
+                    <form action="/admin/orders/<%= order._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="Delivered">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Mark as Delivered
+                        </button>
+                    </form>
+                    <% } %>
+                    
+                    <% if (order.status !== 'Cancelled' && order.status !== 'Delivered') { %>
+                    <form action="/admin/orders/<%= order._id %>/status" method="POST"
+                          onsubmit="return confirm('Are you sure you want to cancel this order?')">
+                        <input type="hidden" name="status" value="Cancelled">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Cancel Order
+                        </button>
+                    </form>
+                    <% } %>
+                    
+                    <a href="javascript:void(0)" onclick="printInvoice()" class="btn btn-outline-primary">
+                        <i class="bi bi-printer me-2"></i>
+                        Print Invoice
+                    </a>
+                    
+                    <a href="/admin/orders" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Back to Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Order Details Page Styles & Scripts -->
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+.timeline-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    border: 3px solid white;
+}
+.timeline-item.active .timeline-marker {
+    background-color: var(--bs-primary);
+}
+.timeline-content {
+    padding-left: 10px;
+}
+address {
+    font-style: normal;
+    line-height: 1.6;
+}
+.table-sm th {
+    font-weight: 600;
+}
+</style>
+
+<script>
+// Print invoice function
+function printInvoice() {
+    const printContent = `
+        <html>
+        <head>
+            <title>Invoice - <%= order.orderId %></title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+                .header h1 { margin: 0; color: #333; }
+                .info { display: flex; justify-content: space-between; margin-bottom: 30px; }
+                .info-section { flex: 1; }
+                .info-section h3 { margin-top: 0; font-size: 16px; color: #666; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                th { background-color: #f8f9fa; text-align: left; padding: 10px; border-bottom: 2px solid #ddd; }
+                td { padding: 10px; border-bottom: 1px solid #ddd; }
+                .total { text-align: right; margin-top: 30px; }
+                .total table { width: 300px; margin-left: auto; }
+                .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #666; }
+                @media print {
+                    body { padding: 0; }
+                    .no-print { display: none; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>INVOICE</h1>
+                <p>Order #<%= order.orderId %></p>
+                <p>Date: <%= new Date(order.createdAt).toLocaleDateString() %></p>
+            </div>
+            
+            <div class="info">
+                <div class="info-section">
+                    <h3>BILL TO</h3>
+                    <p><strong><%= order.customerName || 'Customer' %></strong></p>
+                    <p><%= order.customerEmail %></p>
+                    <% if (order.shippingAddress) { %>
+                    <p><%= order.shippingAddress.street %></p>
+                    <p><%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> <%= order.shippingAddress.zipCode %></p>
+                    <p><%= order.shippingAddress.country %></p>
+                    <% } %>
+                </div>
+                
+                <div class="info-section">
+                    <h3>SHOP INFORMATION</h3>
+                    <p><strong>MyShop</strong></p>
+                    <p>123 Business Street</p>
+                    <p>City, State 12345</p>
+                    <p>Country</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Email: orders@myshop.com</p>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% order.items.forEach(item => { %>
+                    <tr>
+                        <td><%= item.name %></td>
+                        <td><%= item.quantity %></td>
+                        <td>$<%= item.price.toFixed(2) %></td>
+                        <td>$<%= item.subtotal.toFixed(2) %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            
+            <div class="total">
+                <table>
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td>$<%= order.subtotal.toFixed(2) %></td>
+                    </tr>
+                    <% if (order.shipping > 0) { %>
+                    <tr>
+                        <td>Shipping:</td>
+                        <td>$<%= order.shipping.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <% if (order.tax > 0) { %>
+                    <tr>
+                        <td>Tax:</td>
+                        <td>$<%= order.tax.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <% if (order.discount > 0) { %>
+                    <tr>
+                        <td>Discount:</td>
+                        <td>-$<%= order.discount.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    <tr>
+                        <td><strong>Total:</strong></td>
+                        <td><strong>$<%= order.total.toFixed(2) %></strong></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="footer">
+                <p>Thank you for your business!</p>
+                <p>MyShop • www.myshop.com • support@myshop.com</p>
+            </div>
+            
+            <div class="no-print" style="margin-top: 30px; text-align: center;">
+                <button onclick="window.print()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+                    Print Invoice
+                </button>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+}
+
+// Add note functionality
+function addNote() {
+    const note = prompt('Add a note to this order:');
+    if (note) {
+        fetch(`/admin/orders/<%= order._id %>/notes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ note: note })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Note added successfully.');
+                location.reload();
+            } else {
+                alert('Error adding note.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error adding note.');
+        });
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    // Add note button if not exists
+    const actionsCard = document.querySelector('.card:last-child .card-body');
+    if (actionsCard) {
+        const addNoteBtn = document.createElement('button');
+        addNoteBtn.type = 'button';
+        addNoteBtn.className = 'btn btn-outline-info w-100 mb-2';
+        addNoteBtn.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Note';
+        addNoteBtn.onclick = addNote;
+        actionsCard.insertBefore(addNoteBtn, actionsCard.firstChild);
+    }
+});
+</script>
